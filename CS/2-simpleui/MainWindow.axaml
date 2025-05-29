@@ -1,0 +1,122 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="JGlossator.MainWindow"
+        Title="JGlossator"
+        Background="#FF2D2D30"
+        Foreground="White">
+
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Background="#FF1E1E1E" Padding="10,5">
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                <TextBlock Text="JGlossator" VerticalAlignment="Center" FontSize="12"/>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5">
+                    <Button Content="─" Width="30" Height="30" Background="Transparent" Foreground="White" BorderThickness="0"/>
+                    <Button Content="□" Width="30" Height="30" Background="Transparent" Foreground="White" BorderThickness="0"/>
+                    <Button Content="✕" Width="30" Height="30" Background="Transparent" Foreground="White" BorderThickness="0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Margin="10" RowDefinitions="Auto,Auto,Auto,Auto,*" ColumnDefinitions="*">
+
+            <Border Grid.Row="0" BorderBrush="#FF4A4A4C" BorderThickness="1" CornerRadius="3" Padding="10" Margin="0,0,0,10">
+                <StackPanel>
+                    <TextBlock Text="昨日すき焼きを食べました" Foreground="#FFDCDCDC" FontSize="14" Margin="0,0,0,5"/>
+                    <TextBlock Text="昨日すき焼きを食べました" Foreground="White" FontSize="28" FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+
+            <ScrollViewer Grid.Row="1" Grid.RowSpan="3" VerticalScrollBarVisibility="Auto">
+                <StackPanel Spacing="10">
+
+<Border Background="#FF252526" CornerRadius="3" Padding="10">
+                        <StackPanel>
+                            <TextBlock Foreground="#FFDCDCDC">
+                                <Run Text="昨日" FontWeight="Bold" Foreground="White" FontSize="16"/>
+                                <Run Text=" きのう 2、さくじつ 2880" Foreground="#FFAAAAAA"/>
+                                <Run Text=" EDICT" Foreground="#FF606060" FontSize="10"/> </TextBlock>
+                            <TextBlock Text="(n-adv, n-t) yesterday; (P)" Foreground="#FFDCDCDC" Margin="0,5,0,0"/>
+                            <TextBlock Text="▶ 品物は昨日入荷しました。The goods arrived yesterday." Foreground="#FFDCDCDC" Margin="0,5,0,0"/>
+                            <TextBlock Text="▶ 彼女は昨日誰も訪問しませんでした。She didn't visit anybody." Foreground="#FFDCDCDC" Margin="0,2,0,0"/>
+                            <TextBlock Text="▶ ここで意味のない押し問答を続けては・・・昨日の繰り返しですわね。If you continue with the pointless arguments here... it'll end up as a repeat of yesterday." Foreground="#FFDCDCDC" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+<Border Background="#FF252526" CornerRadius="3" Padding="10">
+                        <StackPanel>
+                            <TextBlock Foreground="#FFDCDCDC">
+                                <Run Text="すき焼き" FontWeight="Bold" Foreground="White" FontSize="16"/>
+                                <Run Text=" すきやき 0 48007" Foreground="#FFAAAAAA"/>
+                                 <Run Text=" EDICT" Foreground="#FF606060" FontSize="10"/> </TextBlock>
+                            <TextBlock Text="(n) (food) sukiyaki, thin slices of beef, cooked with various vegetables in a table-top cast-iron pan; (P)" Foreground="#FFDCDCDC" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                            <TextBlock Text="▶ この日曜日にすき焼きパーティーをする事になっている。We're having a sukiyaki party this Sunday." Foreground="#FFDCDCDC" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                            <TextBlock Text="▶ そのすき焼きの夕食は実に素晴らしかった。That sukiyaki dinner was a real treat." Foreground="#FFDCDCDC" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                            <TextBlock Text="▶ どうかすき焼きの料理のしかたを教えて下さい。Please tell me how to cook sukiyaki." Foreground="#FFDCDCDC" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+<Border Background="#FF252526" CornerRadius="3" Padding="10">
+                        <StackPanel>
+                             <TextBlock Foreground="#FFDCDCDC">
+                                <Run Text="食べる" FontWeight="Bold" Foreground="White" FontSize="16"/>
+                                <Run Text=" たべる 2 392 (polite past)" Foreground="#FFAAAAAA"/>
+                                 <Run Text=" EDICT" Foreground="#FF606060" FontSize="10"/> </TextBlock>
+                            <TextBlock Text="(v1,vt) ① to eat; ② to live on (e.g. a salary); to live off; to subsist on; (P)" Foreground="#FFDCDCDC" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                            <TextBlock Text="▶ 彼女は魚がひどく嫌いで、少しも食べない。She hates fish and never eats any." Foreground="#FFDCDCDC" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                            <TextBlock Text="▶ 卵を食べるとじんましんが出ます。He gets hives when he eats eggs." Foreground="#FFDCDCDC" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                            <TextBlock Text="▶ 食べられることなくそのためには、海に帰ったのであった。That octopus returned to the sea without being eaten." Foreground="#FFDCDCDC" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <Border Grid.Row="4" Background="#FF1E1E1E" Padding="5" Margin="0,10,0,0" CornerRadius="3">
+                <ItemsControl>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="5"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.Items>
+                        <Border Background="#FF2D2D30" CornerRadius="3" Padding="8,5" MinWidth="80">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="昨" FontSize="24" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="226 サク" FontSize="10" Foreground="#FFAAAAAA" HorizontalAlignment="Center"/>
+                                <TextBlock Text="1140" FontSize="10" Foreground="#FFAAAAAA" HorizontalAlignment="Center"/>
+                                <TextBlock Text="yesterday, previous" FontSize="10" Foreground="#FFDCDCDC" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="#FF2D2D30" CornerRadius="3" Padding="8,5" MinWidth="80">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="日" FontSize="24" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="1 ニチ、ジツ、ひ、-" FontSize="10" Foreground="#FFAAAAAA" HorizontalAlignment="Center"/>
+                                <TextBlock Text="12 び、-か" FontSize="10" Foreground="#FFAAAAAA" HorizontalAlignment="Center"/>
+                                <TextBlock Text="day, sun, Japan, counter for days" FontSize="10" Foreground="#FFDCDCDC" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="#FF2D2D30" CornerRadius="3" Padding="8,5" MinWidth="80">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="焼" FontSize="24" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="982 ショウ、やく、や-" FontSize="10" Foreground="#FFAAAAAA" HorizontalAlignment="Center"/>
+                                <TextBlock Text="1200 き、やける" FontSize="10" Foreground="#FFAAAAAA" HorizontalAlignment="Center"/>
+                                <TextBlock Text="bake, burning" FontSize="10" Foreground="#FFDCDCDC" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="#FF2D2D30" CornerRadius="3" Padding="8,5" MinWidth="80">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="食" FontSize="24" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="328 ショク、ジキ、く" FontSize="10" Foreground="#FFAAAAAA" HorizontalAlignment="Center"/>
+                                <TextBlock Text="1472 う、たべる、くらう" FontSize="10" Foreground="#FFAAAAAA" HorizontalAlignment="Center"/>
+                                <TextBlock Text="eat, food" FontSize="10" Foreground="#FFDCDCDC" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </ItemsControl.Items>
+                </ItemsControl>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>
