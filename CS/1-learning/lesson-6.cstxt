@@ -1,0 +1,23 @@
+﻿// following https://www.youtube.com/watch?v=UETol82cPZk&list=PLdo4fOcmZ0oULFjxrOagaERVAMbmG20Xe&index=6
+
+Console.WriteLine("1. Hello, David!");
+
+string friend1 = "Msutafa";
+string friend2 = "Maxx////";
+friend2 = friend2.Trim('/');
+string friends = $"My friends are {friend1} and {friend2}.";
+
+Console.WriteLine("2. " + friends.Replace("Maxx", "Max"));
+Console.WriteLine("3. " + friends);
+
+friends = friends.Replace("Maxx", "Max");
+Console.WriteLine("4. " + friends);
+Console.WriteLine("5. Is it true that the Max is one of my friends? It is " + friends.Contains("Max") + ".");
+Console.WriteLine($"6. My friends are the small {friend1.    ToLower()} and the big {friend2.ToUpper()}");
+
+Console.Write("7. after this there wont be a new line printed HAHA!!");
+Console.WriteLine($" im curious about my {friends}");
+
+Console.WriteLine("8. My friends are this long: " + friends.Length + "cm.");
+
+Console.WriteLine("9. Is it true that your first friends name starts with the word sex? It's: " + friend1.StartsWith("sex") + ".");

@@ -1,5 +1,4 @@
-﻿
-
+// following this https://www.youtube.com/watch?v=UETol82cPZk&list=PLdo4fOcmZ0oULFjxrOagaERVAMbmG20Xe&index=5
 Console.WriteLine("1. Hello, David!");
 
 string friend1 = "    Msutafa   ";
