@@ -1,5 +1,3 @@
-CS/1-learning/bin
-CS/1-learning/obj
-CS/2-simpleui/bin
-CS/2-simpleui/obj
+CS/**/bin/
+CS/**/obj/
 Go/2-vibeqt/go.sum
