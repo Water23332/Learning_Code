@@ -1,0 +1,48 @@
+// following https://www.youtube.com/watch?v=UETol82cPZk&list=PLdo4fOcmZ0oULFjxrOagaERVAMbmG20Xe&index=7 and episode 8
+// and this in text form https://learn.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/tutorials/numbers-in-csharp
+
+int a = 2100000000;
+int b = 2100000000;
+long c = (long)a + (long)b;
+Console.WriteLine($"1. {c}");
+
+a = 5;
+b = 4;
+c = 2; // you cant change var type
+int d = a + b * (int)c;
+Console.WriteLine($"2. {d}");
+
+a = (int)42.1; //dont do this
+b = (int)38.6; //rounded down
+d = a + b;
+Console.WriteLine($"3. {d} bad");
+
+float a_float = 42.1F; //32bit
+double b_double = 38.6; //Its 64bit
+double c_double = a_float + b_double;
+Console.WriteLine($"4. {c_double} bad"); // prints 80,69999847412109
+
+decimal a_decimal = 42.1M; //preciser, better but uses more resources
+decimal b_decimal = 38.6M; 
+decimal c_decimal = a_decimal + b_decimal;
+Console.WriteLine($"5. {c_decimal} good");
+
+double a_double = 42.1;
+c_double = a_double + b_double;
+Console.WriteLine($"6. {c_double} also good, using doubles which are better");
+
+//small explanation from chatgpt for these three types
+//float:
+//- Stores numbers with decimals (like 3.14).
+//- Uses 32 bits of memory.
+//- Good for saving space, but not super precise.
+
+//double:
+//- Also stores numbers with decimals.
+//- Uses 64 bits of memory.
+//- More precise than float, and is the default for decimal numbers in C#.
+
+//decimal:
+//- Stores numbers with decimals, but with much higher precision.
+//- Uses 128 bits of memory.
+//- Best for money or situations where you need exact decimal values (like financial calculations).
