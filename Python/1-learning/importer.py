@@ -1,5 +1,7 @@
 from zipfile import ZipFile, BadZipFile
 from pathlib import Path
+import io
+import json
 
 # file finder
 dictionaryFolder = Path('dictionaries')
@@ -15,10 +17,20 @@ termBanksData = []
 
 try:
     with ZipFile(dictPath, 'r') as df: # short for 'dictionary file'
-        for zipContents in df.namelist():
-            print(f"this file has been found: {zipContents}")
-            if zipContents.startswith("term_bank"):
-                print("-> this is a yomichan term bank")  # TODO left here
+        archiveContents = df.namelist()
+        for Content in archiveContents:
+            print(f"this file has been found: {Content}")
+            if Content == "index.json":
+                print("-> this is a yomichan term index")
+                with df.open(Content, 'r') as file:
+                    print(f"Opened {Content} from ZIP.")
+            elif Content.startswith("term_bank"):
+                print("-> this is a yomichan term bank")
+                with df.open(Content, 'r') as file_in_zip:
+                    #TODO left here
+                # Process term_bank_file_obj
+                print(f"Opened {Content} from ZIP.")
+                # Content will be read in the next step
 except BadZipFile:
     print(f"the given dictionary in {dictPath} is not a real zip file")
     exit()
