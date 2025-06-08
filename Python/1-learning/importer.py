@@ -27,7 +27,7 @@ try:
             elif Content.startswith("term_bank"):
                 print("-> this is a yomichan term bank")
                 with df.open(Content, 'r') as file_in_zip:
-                    #TODO left here
+                    #TODO #left here
                 # Process term_bank_file_obj
                 print(f"Opened {Content} from ZIP.")
                 # Content will be read in the next step
