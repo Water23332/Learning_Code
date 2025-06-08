@@ -1,13 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"github.com/mappu/miqt"
+)
 
 func main() {
-	var msutafa int8
-	msutafa = 50
-	for msutafa > 40 {
-		fmt.Println("Hello World")
-		msutafa += 10
-		fmt.Println("Msutafa is", msutafa)
-	}
+	app := miqt.NewApplication()
+
+	window := miqt.NewMainWindow()
+	window.SetTitle("Hello, miqt!")
+	window.SetFixedSize(300, 200)
+
+	label := miqt.NewLabel("Hello, World!")
+	window.SetCentralWidget(label)
+
+	window.Show()
+
+	app.Exec()
 }
