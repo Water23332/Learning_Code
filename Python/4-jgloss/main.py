@@ -8,7 +8,6 @@ from importer import extract_termdata_from_zip, create_sql_databases, insert_bul
 def main():
     # Initialize databases
     term_data = extract_termdata_from_zip()
-    term_single = term_data[145491] #should be 缶詰
 
     db_folder = "db"
     project_root = Path(__file__).parent
@@ -21,7 +20,8 @@ def main():
     conn = sqlite3.Connection(dict_db_path)
     cursor = conn.cursor()
     try:
-        insert_bulk_term(cursor, term_single[0], term_single[1], term_single[5])
+        for term_single in term_data:
+            insert_bulk_term(cursor, term_single[0], term_single[1], term_single[5])
         conn.commit()
         print("Successfully inserted all terms!")
     except Exception as e:
