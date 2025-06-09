@@ -28,10 +28,10 @@ def extract_termdata_from_zip(): # returns 'termData'
                         print(f"termbank file successfully opened!!")
                         try:
                             text_file_obj = io.TextIOWrapper(termbank_file_obj, encoding='utf-8')
-                            termData = json.load(text_file_obj)
-                            if termData is None:
+                            jsonData = json.load(text_file_obj)
+                            if jsonData is None:
                                 return [] #needed for error handling
-                            return termData
+                            return jsonData #retuns as tuple, where index 5 (so the 6th item), the definition, also itself is a tuple
                         except json.JSONDecodeError as e:
                             print(f"Error decoding JSON from {termbank_file_obj}: {e}")
                         except Exception as e:
@@ -110,3 +110,9 @@ def insert_bulk_freq(db_cursor, term, freq):
         VALUES (?, ?,);
     """
     db_cursor.executemany(freq_freq_sql, term, freq)
+
+    return 42
+
+if __name__ == "__main__":
+    #everything after and including this is test code, it wont be run when imported, but will be run when the file is called in terminal#
+    print("")
