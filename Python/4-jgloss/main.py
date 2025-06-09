@@ -1,47 +1,32 @@
 import sqlite3
 from pathlib import Path
+from importer import extract_termdata_from_zip, create_sql_databases, insert_bulk_term #, insert_bulk_freq
 
-# Progress: initializing 2 sql databases and a corresponding table
-# TODO: using the data from importer.py to populate those tables with yomichan data
-def init_sql_databases():
+# Progress: calling upon importer.py, inserting a single term into the database
+# TODO: inserting all terms and making the import dictionary part something on its own
+
+def main():
+    # Initialize databases
+    term_data = extract_termdata_from_zip()
+    term_single = term_data[145491] #should be 缶詰
+
     db_folder = "db"
     project_root = Path(__file__).parent
     dict_db_filename = "japanese_dict.db"
-    freq_db_filename = "freq.db"
+    #freq_db_filename = "freq.db"
     dict_db_path = project_root / db_folder / dict_db_filename
-    freq_db_path = project_root / db_folder / freq_db_filename
-    
-    # database 1: dict
-    with sqlite3.connect(dict_db_path) as conn:
-        cursor = conn.cursor()
-        try:
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS dict (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                kanji TEXT NOT NULL,
-                kana TEXT NOT NULL,
-                def TEXT NOT NULL
-            )
-            ''')
-            print(f"dictionary database sucefully created or it already exists")
-        except sqlite3.Error as e:
-            print(f"sqlite error occurred: {e}")
-            exit()
+    #freq_db_path = project_root / db_folder / freq_db_filename
+    create_sql_databases()
 
-    # database 2: freq
-    with sqlite3.connect(freq_db_path) as conn:
-        cursor = conn.cursor()
-        try:
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS dict (
-                id INTEGER PRIMARY KEY AUTOINCREMENT, --idk if i need this (an id) at all, but fuck it, maybe for later
-                term TEXT NOT NULL,
-                freq INTEGER UNIQUE
-            )
-            ''')
-            print(f"freq database sucefully created or it already exists")
-        except sqlite3.Error as e:
-            print(f"sqlite error occurred: {e}")
-            exit()
+    conn = sqlite3.Connection(dict_db_path)
+    cursor = conn.cursor()
+    try:
+        insert_bulk_term(cursor, term_single[0], term_single[1], term_single[5])
+        conn.commit()
+        print("Successfully inserted all terms!")
+    except Exception as e:
+        print(f"failure: {e}")
+        exit()
 
-init_sql_databases()
+#if __name__ == "__main__":
+main()
