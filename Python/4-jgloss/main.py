@@ -1,8 +1,8 @@
 import sqlite3
 from pathlib import Path
 
-
-
+# Progress: initializing 2 sql databases and a corresponding table
+# TODO: using the data from importer.py to populate those tables with yomichan data
 def init_sql_databases():
     db_folder = "db"
     project_root = Path(__file__).parent

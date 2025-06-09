@@ -3,6 +3,9 @@ from pathlib import Path
 import io
 import json
 
+# Progress: wrapping the json data inside the dictionary zip file into an object
+# TODO: using that data for the sql database -> modulating this into a function
+
 # file finder
 def find_zip_dict():
     dictionaryFolder = Path('dictionaries')
