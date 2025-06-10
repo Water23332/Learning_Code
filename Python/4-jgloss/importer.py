@@ -51,13 +51,22 @@ def extract_termdata_from_zip(): # returns 'termData'
         cursor = conn.cursor()
         return cursor
 
-def create_sql_databases():
+def find_db(choice):
     db_folder = "db"
     project_root = Path(__file__).parent
     dict_db_filename = "japanese_dict.db"
     freq_db_filename = "freq.db"
     dict_db_path = project_root / db_folder / dict_db_filename
     freq_db_path = project_root / db_folder / freq_db_filename
+
+    if choice == "dict":
+        return(dict_db_path)
+    elif choice == "freq":
+        return(freq_db_path)
+
+def create_sql_databases():
+    dict_db_path = find_db("dict")
+    freq_db_path = find_db("freq")
     
     # database 1: dict
     with sqlite3.connect(dict_db_path) as conn:
@@ -111,8 +120,12 @@ def insert_bulk_freq(db_cursor, term, freq):
     """
     db_cursor.executemany(freq_freq_sql, term, freq)
 
-    return 42
+def import_terms():
+    term_data = extract_termdata_from_zip()
+    #single_term = term_data[600]
+    #conn = sqlite3.Connection()
+    #insert_bulk_freq()
 
 if __name__ == "__main__":
     #everything after and including this is test code, it wont be run when imported, but will be run when the file is called in terminal#
-    print("")
+    create_sql_databases()

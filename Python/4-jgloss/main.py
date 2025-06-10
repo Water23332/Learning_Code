@@ -7,7 +7,9 @@ from importer import *
 
 def main():
     term_data = extract_termdata_from_zip()
+    for i in term_data[356]:
+        for a in i:
+            print(a)
     
-
 if __name__ == "__main__":
     main()

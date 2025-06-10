@@ -29,10 +29,10 @@ JAPANESE_SENTENCES = [
 def main():
     """
     Continuously copies a random Japanese sentence to the clipboard
-    every 0.5 seconds until the user stops the script.
+    every 0.8 seconds until the user stops the script.
     """
     print("Starting clipboard randomizer...")
-    print("A new Japanese sentence will be copied every 0.5 seconds.")
+    print("A new Japanese sentence will be copied every 0.8 seconds.")
     print("Press Ctrl+C to stop the script.")
 
     try:
@@ -46,7 +46,7 @@ def main():
             # 3. Print the copied sentence to the console for feedback
             print(f"Copied: {sentence}")
             
-            # 4. Wait for 0.5 seconds
+            # 4. Wait for 0.8 seconds
             time.sleep(0.8)
 
     except KeyboardInterrupt:
@@ -55,7 +55,6 @@ def main():
     except pyperclip.PyperclipException as e:
         print("\nError: Could not access the clipboard.")
         print("Please ensure you have a clipboard utility installed.")
-        print("For Linux, try: sudo apt-get install xclip or sudo apt-get install xsel")
         print(f"Details: {e}")
 
 
