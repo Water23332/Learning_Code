@@ -2,3 +2,4 @@ CS/**/bin/
 CS/**/obj/
 Go/2-vibeqt/go.sum
 Go/**/qtbox/
+*.db

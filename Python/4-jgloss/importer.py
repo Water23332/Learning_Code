@@ -4,9 +4,27 @@ import io
 import json
 import sqlite3
 
-# Progress: modulating this into a function
-# TODO: adding this to main
+# Progress: importing terms
+# TODO: importing freq, importing different dictionaries (maybe inside another table that tracks imported dictionaries? maybe also appending the dictionary to every term in the dict_db)
 
+# Database vars
+
+def db_connect():
+    db_folder = "db"
+    dict_db_filename = "japanese_dict.db"
+    freq_db_filename = "freq.db"
+    project_root = Path(__file__).parent
+    dict_db_path = project_root / db_folder / dict_db_filename
+    freq_db_path = project_root / db_folder / freq_db_filename
+
+    # Sqlite connection; these lines also automatically create the .db files
+    dict_conn = sqlite3.connect(dict_db_path)
+    dict_cursor = dict_conn.cursor()
+    freq_conn = sqlite3.connect(freq_db_path)
+    freq_cursor = freq_conn.cursor()
+
+    # Return connections and cursors
+    return dict_conn, dict_cursor, freq_conn, freq_cursor
 
 def find_zip_dict():
     dictionaryFolder = Path('dictionaries')
@@ -25,7 +43,7 @@ def extract_termdata_from_zip(): # returns 'termData'
             for Content in archiveContents:
                 if Content.startswith("term_bank"):
                     with zf.open(Content) as termbank_file_obj:
-                        print(f"termbank file successfully opened!!")
+                        print(f"termbank file successfully opened ✅")
                         try:
                             text_file_obj = io.TextIOWrapper(termbank_file_obj, encoding='utf-8')
                             jsonData = json.load(text_file_obj)
@@ -43,63 +61,51 @@ def extract_termdata_from_zip(): # returns 'termData'
         print(f"unkown error {Exception}")
         exit()
     return []  # Return empty list if no termbank file found
-    db_folder = "db"
-    project_root = Path(__file__).parent
-    freq_db_filename = "freq.db"
-    freq_db_path = project_root / db_folder / freq_db_filename
-    with sqlite3.connect(freq_db_path) as conn:
-        cursor = conn.cursor()
-        return cursor
 
-def find_db(choice):
-    db_folder = "db"
-    project_root = Path(__file__).parent
-    dict_db_filename = "japanese_dict.db"
-    freq_db_filename = "freq.db"
-    dict_db_path = project_root / db_folder / dict_db_filename
-    freq_db_path = project_root / db_folder / freq_db_filename
+def create_sql_databases(dict_cursor, dict_conn, freq_cursor, freq_conn):
+    # Check
+    try:
+        dict_cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='dict'")
+        freq_cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='freq'")
+        if dict_cursor.fetchone() and freq_cursor.fetchone():
+            print("Table 'dict' and 'freq' do exist in the dictionary database. Skipping database creation ⏩")
+            return # ends it prematurely 
+    except sqlite3.Error as e:
+        print(f"sqlite error occurred whilst checking if database exists: {e}")
+        exit()
 
-    if choice == "dict":
-        return(dict_db_path)
-    elif choice == "freq":
-        return(freq_db_path)
-
-def create_sql_databases():
-    dict_db_path = find_db("dict")
-    freq_db_path = find_db("freq")
-    
     # database 1: dict
-    with sqlite3.connect(dict_db_path) as conn:
-        cursor = conn.cursor()
-        try:
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS dict (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                kanji TEXT NOT NULL,
-                kana TEXT NOT NULL,
-                definition TEXT NOT NULL
-            )
-            ''')
-            print(f"dictionary database sucefully created or it already exists")
-        except sqlite3.Error as e:
-            print(f"sqlite error occurred: {e}")
-            exit()
+    try:
+        dict_cursor.execute('''
+        CREATE TABLE IF NOT EXISTS dict (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            kanji TEXT NOT NULL,
+            kana TEXT NOT NULL,
+            definition TEXT NOT NULL
+        )
+        ''')
+        dict_conn.commit()
+        #dict_conn.close()
+        print(f"dictionary database sucefully created ✅")
+    except sqlite3.Error as e:
+        print(f"sqlite error occurred whilst creating term_database: {e}")
+        exit()
 
     # database 2: freq
-    with sqlite3.connect(freq_db_path) as conn:
-        cursor = conn.cursor()
-        try:
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS freq (
-                id INTEGER PRIMARY KEY AUTOINCREMENT, --idk if i need this (an id) at all, but fuck it, maybe for later
-                term TEXT NOT NULL,
-                freq INTEGER UNIQUE
-            )
-            ''')
-            print(f"freq database sucefully created or it already exists")
-        except sqlite3.Error as e:
-            print(f"sqlite error occurred: {e}")
-            exit()
+    try:
+        freq_cursor.execute('''
+        CREATE TABLE IF NOT EXISTS freq (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            term TEXT NOT NULL,
+            freq INTEGER UNIQUE
+        )
+        ''')
+        freq_conn.commit()
+        #freq_conn.close()
+        print(f"freq database sucefully created ✅")
+    except sqlite3.Error as e:
+        print(f"sqlite error occurred whilst creating freq_database: {e}")
+        exit()
 
 def insert_bulk_term(db_cursor, kanji, kana, definition):
     # Convert definition list to string if it's a list
@@ -116,16 +122,48 @@ def insert_bulk_term(db_cursor, kanji, kana, definition):
 def insert_bulk_freq(db_cursor, term, freq):
     freq_freq_sql = """
         INSERT INTO freq (term, freq)
-        VALUES (?, ?,);
+        VALUES (?, ?)
     """
     db_cursor.executemany(freq_freq_sql, term, freq)
 
-def import_terms():
+def import_terms(dict_cursor, dict_conn):
     term_data = extract_termdata_from_zip()
-    #single_term = term_data[600]
-    #conn = sqlite3.Connection()
-    #insert_bulk_freq()
+
+    # Check if the first and last terms are already in the database
+    try:
+        first_term = term_data[0]
+        last_term = term_data[-1]
+
+        dict_cursor.execute("SELECT COUNT(*) FROM dict WHERE kanji = ? AND kana = ?", (first_term[0], first_term[1]))
+        first_term_exists = dict_cursor.fetchone()[0] > 0
+
+        dict_cursor.execute("SELECT COUNT(*) FROM dict WHERE kanji = ? AND kana = ?", (last_term[0], last_term[1]))
+        last_term_exists = dict_cursor.fetchone()[0] > 0
+
+        if first_term_exists and last_term_exists:
+            print("Terms already imported. Skipping import ⏩")
+            return
+    except Exception as e:
+        print(f"im too lazy to specify this error: {e}")
+        exit(1)
+
+    # Proceed with importing terms if not already imported
+    for term in term_data:
+        insert_bulk_term(dict_cursor, term[0], term[1], term[5])  # [0] kanji, [1] kana, [5] definition
+    
+    dict_conn.commit()
+    dict_conn.close()
+
+    print("import success ✅")
+
 
 if __name__ == "__main__":
-    #everything after and including this is test code, it wont be run when imported, but will be run when the file is called in terminal#
-    create_sql_databases()
+    # everything after and including this is test code, it wont be run when imported, but will be run when the file is called in terminal#
+    ## Vars
+    dict_conn, dict_cursor, freq_conn, freq_cursor = db_connect()
+
+    ## Creaton
+    create_sql_databases(dict_cursor, dict_conn, freq_cursor, freq_conn)
+
+    ## Import term
+    import_terms(dict_cursor, dict_conn)
