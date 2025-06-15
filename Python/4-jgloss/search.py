@@ -15,4 +15,4 @@ def kanji_search(kanji_input):
     return result
     
 if __name__ == "__main__":
-    print(kanji_search("本日")[1])
+    print(kanji_search("本日"))
